@@ -40,8 +40,9 @@ namespace YgoMasterClient
             string[] splitted = consoleInput.Split();
             switch (splitted[0].ToLower())
             {
-                case "itemid":// Dumps all IDS enums
+                case "itemid":// Creates json for values in IDS_ITEM (all item ids)
                     {
+                        // TODO: Get the exact values from internal data rather than probing by id
                         Console.WriteLine("Getting item ids...");
                         bool dumpInvalid = false;
                         if (splitted.Length > 1)
@@ -1449,6 +1450,11 @@ namespace YgoMasterClient
                         Console.WriteLine("CurrentCpSR:" + currentCpSR + " CurrentCpUR:" + currentCpUR);
                         Console.WriteLine("Crafting " + cardsToCraft.Count + " cards to obtain " + packsObtained.Count + " / " + packs.Count + " packs");
 
+                        if (cardsToCraft.Count == 0)
+                        {
+                            return;
+                        }
+
                         if (packsObtained.Count != packs.Count)
                         {
                             Console.WriteLine("Not crafting as this wont give all the desired packs. Missing packs: " +
@@ -1471,7 +1477,7 @@ namespace YgoMasterClient
                             };
                         }
                         csbool check = false;
-                        Craft_generate_multi.Invoke(new IntPtr[] { YgomMiniJSON.Json.Deserialize(MiniJSON.Json.Serialize(cardListData)), new IntPtr(&check) });
+                        Craft_generate_multi.Invoke(new IntPtr[] { YgomMiniJSON.Json.Deserialize(MiniJSON.Json.Serialize(cardListData)), new IntPtr(&check), IntPtr.Zero });
                     }
                     break;
                 case "auto_free_pull":// Opens every pack with a free pull
